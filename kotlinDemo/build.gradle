@@ -1,0 +1,42 @@
+buildscript {
+    ext.kotlin_version = '1.3.20'
+}
+
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.20'
+}
+
+dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1")
+}
+
+group 'ru.faoxis'
+version '0.0.1-SNAPSHOT'
+
+apply plugin: 'kotlin'
+
+
+sourceCompatibility = 1.8
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+
+
+}

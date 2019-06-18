@@ -1,0 +1,5 @@
+rootProject.name = 'betterJava'
+
+includeBuild 'javaDemo'
+includeBuild 'kotlinDemo'
+includeBuild 'scalaDemo'

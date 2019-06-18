@@ -1,0 +1,21 @@
+group 'ru.faoxis'
+version '0.0.1-SNAPSHOT'
+
+apply plugin: 'java'
+
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'junit', name: 'junit', version: '4.12'
+
+    // https://mvnrepository.com/artifact/io.projectreactor/reactor-core
+    compile group: 'io.projectreactor', name: 'reactor-core', version: '3.2.10.RELEASE'
+
+}
+
+
