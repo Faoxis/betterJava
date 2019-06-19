@@ -1,10 +1,9 @@
-import language.higherKinds
 import cats.implicits._
 import cats.{Id, Monad}
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
-import language.higherKinds
+import scala.concurrent.Future
+import scala.language.higherKinds
 
 trait CatClinicClient[F[_]] {
   def getHungryCat: F[Int]
@@ -49,7 +48,7 @@ object IndependentBusinessLogic extends App {
       memberId <- CatClinicClient[F].getFreeMember
       _ <- CatClinicClient[F].feedCatByFreeMember(catId, memberId)
     } yield ()
---
+
   makeCatHappy[Id]()
   Thread.sleep(4000)
 }

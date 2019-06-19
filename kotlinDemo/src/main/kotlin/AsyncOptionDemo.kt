@@ -1,29 +1,30 @@
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
-suspend fun getResultFromFirstService(): Int? = 40
-suspend fun getResultFromSecondService(): Int? = 2
-
+fun getResultFromFirstService(): Int?  {
+    println(Thread.currentThread().name)
+    return 40
+}
+fun getResultFromSecondService(number: Int): Int? {
+    println(Thread.currentThread().name)
+    return number + 2
+}
 
 fun main() = runBlocking { // start main coroutine
-    val channel = Channel<Int?>()
 
-    launch {
-        getResultFromFirstService()
-
-    }
-    launch {
-        channel.receive()?.let { first ->
-            getResultFromSecondService()?.let { second ->
-                first + second
+    val result = async {
+        withContext(Dispatchers.Default) { getResultFromFirstService() }?.let { first ->
+            withContext(Dispatchers.Default) { getResultFromSecondService(first) }?.let { second ->
+                "$first $second"
             }
-        }.let {
-            println(it)
         }
     }
+    println(result.await())
 
-    delay(2000)
 }
+
 
 
 

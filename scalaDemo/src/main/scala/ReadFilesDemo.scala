@@ -1,8 +1,9 @@
+import java.nio.file.Paths
+import java.util.concurrent.Executors
+
 import cats.effect._
 import cats.syntax.functor._
 import fs2.{Stream, io, text}
-import java.nio.file.Paths
-import java.util.concurrent.Executors
 
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutorService}
 

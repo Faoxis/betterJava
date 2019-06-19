@@ -3,6 +3,7 @@ import org.junit.Test;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static org.junit.Assert.assertEquals;
@@ -11,19 +12,19 @@ public class CompletableFutureAndOptionDemo {
 
     @Test
     public void testCorrect() throws Exception {
-        Optional<Integer> res = calcResultOfTwoServices(
+        Optional<String> res = calcResultOfTwoServices(
                 () -> Optional.of(40),
-                () -> Optional.of(2)
+                number -> Optional.of(number + 2)
         ).get(1, TimeUnit.SECONDS);
 
-        assertEquals(Optional.of(42), res);
+        assertEquals(Optional.of("40 42"), res);
     }
 
     @Test
     public void testFirstEmpty() throws Exception {
-        Optional<Integer> res = calcResultOfTwoServices(
+        Optional<String> res = calcResultOfTwoServices(
                 Optional::empty,
-                () -> Optional.of(2)
+                number -> Optional.of(number + 2)
         ).get(1, TimeUnit.SECONDS);
 
         assertEquals(Optional.empty(), res);
@@ -31,24 +32,24 @@ public class CompletableFutureAndOptionDemo {
 
     @Test
     public void testSecondEmpty() throws Exception {
-        Optional<Integer> res = calcResultOfTwoServices(
+        Optional<String> res = calcResultOfTwoServices(
                 () -> Optional.of(40),
-                Optional::empty
+                number -> Optional.empty()
         ).get(1, TimeUnit.SECONDS);
 
         assertEquals(Optional.empty(), res);
     }
 
-    private static CompletableFuture<Optional<Integer>> calcResultOfTwoServices (
+    private static CompletableFuture<Optional<String>> calcResultOfTwoServices (
             Supplier<Optional<Integer>> getResultFromFirstService,
-            Supplier<Optional<Integer>> getResultFromSecondService
+            Function<Integer, Optional<Integer>> getResultFromSecondService
     ) {
         return CompletableFuture
                 .supplyAsync(getResultFromFirstService)
                 .thenApplyAsync(firstResultOptional ->
-                        firstResultOptional.flatMap(firstResult ->
-                                getResultFromSecondService.get().map(secondResult ->
-                                        firstResult + secondResult
+                        firstResultOptional.flatMap(first ->
+                                getResultFromSecondService.apply(first).map(second ->
+                                    first + " " + second
                                 )
                         )
                 );
